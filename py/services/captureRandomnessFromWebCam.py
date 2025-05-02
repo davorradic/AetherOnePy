@@ -12,6 +12,7 @@ class WebCamCollector:
         self.stopCollectingHotbits: bool = False
         self.main = main
         self.countHotbits = countHotbits
+        self.cameraIndex = 0
 
     def bits_to_integer(self, bits):
         """Convert a list of bits into an integer."""
@@ -52,7 +53,8 @@ class WebCamCollector:
         self.stopCollectingHotbits = True
 
     def checkIfWebCamIsAvailable(self):
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(self.cameraIndex)
+        print("cap", cap)
         try:
             if not cap.isOpened():
                 self.main.emitMessage('hotbits', 'Failed to open the camera!')
@@ -70,7 +72,7 @@ class WebCamCollector:
         bit_array = []
         max_bits = 32  # Maximum number of bits for an integer
 
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(self.cameraIndex)
         if not cap.isOpened():
             self.main.emitMessage('hotbits', 'Failed to open the camera!')
             raise Exception("Failed to open the camera")
